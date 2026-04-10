@@ -3,6 +3,13 @@ import csv
 class csvFile:
     def __init__(self):
         self.data = {}
+
+    def _get_int(self, row, *keys):
+        for key in keys:
+            value = row.get(key)
+            if value is not None:
+                return int(value or 0)
+        return 0
         
     def load_data(self, fileName):
         try:
@@ -17,11 +24,11 @@ class csvFile:
                     Name =  row['Name'] or 'Unknown' # Name is set to Unknown if it is blank
                     
                     Scores = {
-                     'Programming': int(row['Programming'] or 0), # or 0 fills in for missing values
-                     'Hardware': int(row['Hardware'] or 0),
-                     'Calculus': int(row['Calculus'] or 0),
-                     'Electronics': int(row['Electronics'] or 0),
-                     'Semiconductor Devices': int(row['Semiconductor Devices'] or 0)
+                     'Programming': self._get_int(row, 'Programming'), # or 0 fills in for missing values
+                     'Hardware': self._get_int(row, 'Hardware', 'Hardware Assembly'),
+                     'Calculus': self._get_int(row, 'Calculus'),
+                     'Electronics': self._get_int(row, 'Electronics'),
+                     'Semiconductor Devices': self._get_int(row, 'Semiconductor Devices')
                      }
                     
                     if student_ID in self.data:
